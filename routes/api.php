@@ -24,4 +24,5 @@ Route::controller(LeagueController::class)->group(function () {
     Route::post('/league/create', 'create');
     Route::post('/league/simulate/{round}', 'simulateRound');
     Route::post('/league/simulate-all/', 'simulateAll');
+    Route::put('/league/result/', 'modifyResult');
 });

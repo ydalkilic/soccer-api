@@ -1,66 +1,63 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## About API Endpoints
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a preliminary API for simulating a soccer league. Here's the provided endpoints and explanations.
 
-## About Laravel
+- POST /api/league/create 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+   Endpoint for creating random teams and builds fixture. 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- GET /api/league/
+    
+    Calculates and returns current standings table. Table also have championship chances if the second half in league is in progress.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- POST /api/league/simulate/{round}
+    
+    Simulates the matches for given round and returns the results.
 
-## Learning Laravel
+- POST /api/league/simulate-all
+    
+    Simulates league all to the end of season and return results.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- PUT /api/league/result
+    
+    Updates the score of the given game with following post body:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+            {
+                
+                "resultId": "986acbd9-81cc-4516-aedf-cfee276250ed",
+                "homeGoals": 2,
+                "awayGoals": 3
+            }
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Config variables
 
-## Laravel Sponsors
+Some of the league settings are located in /config/league.php . Settings are explained as follows
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+*  'numberOfContestants' => 4, // Number of teams of simulated league, this should be an even number and less than the count of teams array.
+*  'homeAdvantageFactor' => 10, // This value is added to strength of home team to mimic supporter boost.
+*  'awayDisadvantageFactor' => 5, // This value is substracted from away team to mimic opponent supporter boost.
+*  'minimalStrength' => 5, // If effective strength of a team drops to 0, that means there's no mathematical chance of this team to win which is unreal. So this variable is minimum strength for a team
+*  'maxGoalsForTeam' => 5, // Max number of goals a team can score on a single match.
+*  'teams' => [
 
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+        'AFC Bournemouth',
+        'Arsenal',
+        'Aston Villa',
+        'Brighton & Hove Albion',
+        'Burnley',
+        'Chelsea',
+        'Crystal Palace',
+        'Everton',
+        'Leicester City',
+        'Liverpool',
+        'Manchester City',
+        'Manchester United',
+        'Newcastle United',
+        'Norwich City',
+        'Sheffield United',
+        'Southampton',
+        'Tottenham Hotspur',
+        'Watford',
+        'West Ham United',
+        'Wolverhampton Wanderers',
+  ],

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Components\LeagueComponent;
 use App\Http\Controllers\Controller;
 
@@ -88,6 +89,30 @@ class LeagueController extends Controller
         try {
             return response()->json([
                 'results' => $this->leagueComponent->simulateAllFixture()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Simulate league all to the finish
+     * 
+     * TODO: We can add validation by extending Request class
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function modifyResult(Request $request)
+    {
+        try {
+            $requestParams = $request->all();
+            if (!isset($requestParams['resultId'], $requestParams['homeGoals'], $requestParams['awayGoals'])) {
+                throw new \Exception('Invalid request parameters');
+            }
+            return response()->json([
+                'results' => $this->leagueComponent->updateResult($requestParams['resultId'], $requestParams['homeGoals'], $requestParams['awayGoals'])
             ]);
         } catch (\Exception $e) {
             return response()->json([

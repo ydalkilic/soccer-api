@@ -114,6 +114,28 @@ class LeagueComponent
         }
     }
 
+    /**
+     * 
+     * Updates an existing result.
+     * 
+     * 
+     * @return array Updated result
+     */
+    public function updateResult(string $resultId, int $homeGoals, int $awayGoals) {
+        try {
+            $existingResult = Result::find($resultId);
+            if (is_null($existingResult)) {
+                throw new \Exception('Result not found');
+            }
+            $existingResult->home_goals = $homeGoals;
+            $existingResult->away_goals = $awayGoals;
+            $existingResult->save();
+            return $existingResult;
+        } catch (\Exception $e) {
+            throw new \Exception('Update result failed: ' . $e->getMessage());
+        }
+    }
+
     private function isChampionshipClinched(array $standings) {
         try {
             if (empty($standings) || $standings[0]->Games < 4) {
